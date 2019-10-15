@@ -1,0 +1,32 @@
+/* //for desktops */
+
+/* //for all cells number data */
+.table-data-cell{
+    font-size: 14px;
+    text-align: left;
+}
+.table-btn{
+    font-size: 15px;
+}
+
+
+
+
+/* //for tablets and big screens mobiles */
+@media only screen and (max-width: 700px) {
+    .table-data-cell{
+        font-size: 13px;
+    }
+    .table-btn{
+        font-size: 14px;
+    }
+}
+/* //for mobile screens */
+@media only screen and (max-width: 560px) {
+    .table-data-cell{
+        font-size: 10px;
+    }
+    .table-btn{
+        font-size: 12px;
+    }
+}

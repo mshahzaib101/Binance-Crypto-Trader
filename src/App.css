@@ -1,0 +1,23 @@
+:root{
+  --light-blue: #4A90E2;
+  --light-green: #3ad29f;
+  --text-color: #000;
+  --dark-background-color: #1F2026;
+  --dark-background-text-color:rgba(255,255,255,0.3);
+}
+
+body,
+#root {
+  min-height:100vh;
+}
+
+h1.website-title{
+  color: var(--light-blue);
+  text-transform:uppercase;
+  font-weight:bold;
+  font-size:20px;
+
+}
+h1.website-title > span{
+  color: var(--text-color);
+}

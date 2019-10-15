@@ -1,0 +1,152 @@
+Some best practices
+
+* avoid using .bind(this). it takes time to load. use this in react: 
+functionName = () => {} 
+* use es6 backets like : 
+`text ${variable}`
+i have use it key attribute in map.
+* name the file as PairSelector.jsx in react not as .js.
+
+
+1) The wrapper component, App, contains a state-property named pair.
+ This property is consumed by the other components. 
+ The PairSelector component shows a list of available pairs. 
+ Each pair already has a onClick callback set which gets the selected pair. 
+ Pass the selected pair to the state of the wrapper App component.
+
+SOLUTION
+i have created a new prop 'pairValueHandler' and passed it to <PairSelector>
+this props is basically a function which takes the value from child and
+bring it to parent component
+this.props.pairValueHandler(pair)   //this is that function props
+
+for more info:
+https://medium.com/@ruthmpardee/passing-data-between-react-components-103ad82ebd17
+
+ -----------------------------------------------------------------------------------------
+
+
+
+2) Note that after updating the pair, the individual components still 
+ contain data and subscriptions to the old pair. Remove these upon updating the property.
+
+ SOLUTION
+ I have use componentDidUpdate() because componentDidMount() runs only one time
+ when component runs first time. So componentDidUpdate() runs when there is a 
+ change in this.props.pair. (note: both do same job but at different time)
+ help: https://reactjs.org/docs/react-component.html#componentdidmount
+
+ I have change your tradelist array logic. a new element is added at first position on array
+ not at last . array.unshift() -- adds element at first. Old ones are removed.
+
+ I have shown a loader through ReactStrap until data is been bought from other trading pair.
+
+
+ -----------------------------------------------------------------------------------------
+
+ 3) The PairSelector component contains a list of available pairs with volume, 
+ ticker (current price) and 24h change. The list is limited to 20 entries but there are more 
+ entries available. Due to the nature of the updates, this list is constantly changing and 
+ reordering. Reorder the list by volume so that the 20 pairs with highest volume are shown 
+ and shown pairs will only occasionally change based on volume.
+
+ SOLUTION
+for sorting i have to change some of your logic. I loop through the object and push
+object in array. i push the data from api to an array(pairArray)
+and save to state.
+then i map it for displaying with .sort() algoritheme
+
+ -----------------------------------------------------------------------------------------
+
+
+
+4) The pairs in the PairSelector component have a change property. Change the colour of the 
+ background of the rows to show positive or negative change (use bootstrap classes)
+
+SOLUTION
+I have make the className dynamic. When data is passed to array(pairs) in state a bgcolor
+property is also passed after some conditions.this propierty is use as classname in <tr>. 
+
+
+ -----------------------------------------------------------------------------------------
+
+
+5) The RecentTrades component contains a list of the most recent trades. Change the background
+ colour of each trade to indicate sell or buy order (refer to maker property on the trade, 
+ and binance-api-node for more info).
+
+SOLUTION
+I have made a function called bgColorAdder(). this function takes the trade object and adds
+a property for row color. this property is used in classname in map as dynamic.
+
+-----------------------------------------------------------------------------------------
+
+
+6) The RecentTrades limits its output to the last 20 trades. However, this is not shown 
+correctly. Old trades are currently not removed from the list. Order the list so that the 
+last trade is shown on top and, when the list reaches 21 entries, the oldest trade is removed.
+
+SOLUTION
+I have use array.unshift() for pushing new data at first position.
+array .pop() remove last one when it length gets equal to 21
+
+-----------------------------------------------------------------------------------------
+
+
+7) The RecentTrades component throws errors sometimes about duplicate keys due to the 
+same trade coming in twice through the socket (see console). Prevent the list to contain 
+duplicate keys.
+
+SOLUTION
+These keys in map are only used by react algorithem. I have fixed it
+by using index number of each loop .
+
+
+-----------------------------------------------------------------------------------------
+
+8) The OrderBook component should show a list of current orders. Show the 10 lowest
+ ask = sell orders and the 10 highest bid = buy orders. Update the list when new
+  entries come in.
+
+SOLUTION
+firstly i have write the code also in componentdidupdate(). Its is mostly like the code
+in componentdidmount() accept the loader handling code.
+I sort the array of asks and bids and store 10 elements in state.
+elements are shown through mapping in render.
+
+-----------------------------------------------------------------------------------------
+
+9) The OrderBook component shows a ticker with the current price of the selected pair.
+ Highlight the background for .5s to indicate a negative or positive price change. 
+ Use transition. (see example the video clip)
+
+ SOLUTION
+ I have make a state called tickerbgColor in orderbook.js. This contains color which
+ changes when there is a change in ticker rate. this color is passed as a prop
+ to ticker component.
+
+
+-----------------------------------------------------------------------------------------
+
+10) Each component has its own websocket subscriptions. This is very inefficient. 
+Find a solution to this so that only one websocket will be used.
+
+SOLUTION
+I have done this by calling it once in react app and making only one web socket connection.
+see index.js(BinanceWebSocket). And import it where it want to use it.
+This make it effecient .
+NOTE: RecentTrades component loads because of no data response from api.
+when it recieve data it shows it.(i have tested it)
+
+-----------------------------------------------------------------------------------------
+
+
+11) The current layout is messy due to different lengths of data. Standardize the precision
+ and/or length of given data.
+
+ SOLUTION
+ I have done this by controlling the fontsize through media querries in style1.css.
+ for controlling the string length i have use Number() function of javascript.
+ this function removes additional zeros from end.
+
+-----------------------------------------------------------------------------------------
